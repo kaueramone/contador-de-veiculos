@@ -19,9 +19,9 @@ O projeto agora suporta um modo **Servidor + Banco de Dados**, ideal para jogos 
 
 ## ✨ Features
 
-- 🧠 **YOLOv8 Driven:** Detecção de alta precisão para múltiplas classes de veículos.
-- ⚡ **Zero Backend:** Todo o processamento de IA é feito no cliente (WASM/WebGL).
-- 📺 **HLS Ready:** Suporte nativo para streams de câmeras de segurança e trânsito (via HLS.js).
+- 🧠 **YOLOv8 Driven:** Detecção de alta precisão calibrada no servidor.
+- ⚡ **Real-time Sync:** Sincronização instantânea via WebSockets (Supabase Realtime).
+- 📺 **HLS Ready:** Suporte para streams de câmeras de segurança e trânsito.
 - 📊 **Real-time Analytics:** FPS, tempo de inferência, veículos por minuto e log de eventos.
 - 🎨 **Modern Design:** Interface futurista "Cyberpunk" com modo escuro e animações suaves.
 - ⏱️ **Integrated Timer:** Perfeito para sessões de contagem cronometradas.

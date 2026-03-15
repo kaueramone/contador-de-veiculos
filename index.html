@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Counter — Live Traffic Camera</title>
+    <meta name="description"
+        content="Conte veículos em tempo real usando câmera de trânsito ao vivo com detecção por IA.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                        <circle cx="12" cy="13" r="4" />
+                    </svg>
+                </div>
+                <div>
+                    <h1>Vehicle Counter</h1>
+                    <span class="header-subtitle">SP 055 KM 110 — Caraguatatuba, SP</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="status-badge" id="statusBadge">
+                    <span class="status-dot"></span>
+                    <span id="statusText">Inicializando...</span>
+                </div>
+                <div class="live-badge" id="liveBadge" style="display:none;">
+                    <span class="live-dot"></span>
+                    LIVE
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Video Container -->
+            <div class="video-section">
+                <div class="video-wrapper" id="videoWrapper">
+                    <video id="videoElement" muted autoplay playsinline crossorigin="anonymous"></video>
+                    <canvas id="overlayCanvas"></canvas>
+                    <div class="video-overlay-info">
+                        <span class="camera-label">📹 DER-SP — Rod. Dr. Manoel Hyppolito Rego</span>
+                    </div>
+                    <!-- Loading overlay -->
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text" id="loadingText">Carregando stream...</p>
+                    </div>
+                </div>
+
+                <!-- Controls Bar -->
+                <div class="controls-bar">
+                    <button class="btn btn-accent" id="btnToggleDetection" disabled>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="1" y="1" width="22" height="22" rx="2" ry="2" />
+                            <line x1="1" y1="12" x2="23" y2="12" />
+                        </svg>
+                        Mostrar Detecção
+                    </button>
+                    <button class="btn btn-secondary" id="btnResetCount">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="1 4 1 10 7 10" />
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                        </svg>
+                        Zerar Contagem
+                    </button>
+                    <div class="controls-spacer"></div>
+                    <div class="fps-indicator">
+                        <span id="fpsValue">0</span> FPS
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Panel -->
+            <aside class="stats-panel">
+                <!-- Timer Card -->
+                <div class="stats-card stats-timer">
+                    <div class="stats-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        <span>Contador de Tempo</span>
+                    </div>
+                    <div class="timer-display" id="timerDisplay">05:00</div>
+                    <div class="timer-controls">
+                        <button class="btn btn-timer btn-start" id="btnStartTimer">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+                            Iniciar
+                        </button>
+                        <button class="btn btn-timer btn-stop" id="btnStopTimer" style="display:none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <rect x="6" y="4" width="4" height="16" />
+                                <rect x="14" y="4" width="4" height="16" />
+                            </svg>
+                            Parar
+                        </button>
+                        <button class="btn btn-timer btn-reset-timer" id="btnResetTimer">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="1 4 1 10 7 10" />
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="timer-progress">
+                        <div class="timer-progress-bar" id="timerProgressBar"></div>
+                    </div>
+                </div>
+
+                <!-- Total Count -->
+                <div class="stats-card stats-total">
+                    <div class="stats-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                        </svg>
+                        <span>Total de Veículos</span>
+                    </div>
+                    <div class="stats-number" id="totalCount">0</div>
+                    <div class="stats-sub">cruzaram a linha</div>
+                    <div id="lineFlash" class="line-flash-indicator"></div>
+                </div>
+
+                <!-- Session Info -->
+                <div class="stats-card stats-info">
+                    <div class="stats-card-header">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="16" x2="12" y2="12" />
+                            <line x1="12" y1="8" x2="12.01" y2="8" />
+                        </svg>
+                        <span>Informações</span>
+                    </div>
+                    <div class="session-info">
+                        <div class="session-row">
+                            <span>Veículos/min</span>
+                            <span id="vehiclesPerMin">0.0</span>
+                        </div>
+                        <div class="session-row">
+                            <span>Detectados agora</span>
+                            <span id="currentDetections">0</span>
+                        </div>
+                        <div class="session-row">
+                            <span>Rastreados</span>
+                            <span id="trackedCount">0</span>
+                        </div>
+                        <div class="session-row">
+                            <span>Modelo IA</span>
+                            <span id="modelStatus">Carregando...</span>
+                        </div>
+                        <div class="session-row">
+                            <span>Inference</span>
+                            <span id="inferenceTime">0</span> ms
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Log -->
+                <div class="stats-card stats-log">
+                    <div class="stats-card-header">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        <span>Log de Eventos</span>
+                    </div>
+                    <div class="log-container" id="logContainer">
+                        <div class="log-entry log-info">Sistema iniciado...</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Hidden preprocessing canvas -->
+    <canvas id="prepCanvas" width="640" height="640" style="display:none;"></canvas>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.18.0/dist/ort.all.min.js"></script>
+    <script src="app.js?v=5.1"></script>
+</body>
+
+</html>

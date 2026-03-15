@@ -1,0 +1,12 @@
+# Large model files
+*.pt
+*.onnx
+
+# OS-specific files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Temporary files
+tmp/
+*.log

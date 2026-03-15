@@ -1,0 +1,87 @@
+# 🚗 Vehicle Counter — AI Live Traffic Analysis
+> **Conte veículos em tempo real direto da sua câmera, movido por Inteligência Artificial no navegador.**
+
+[![GitHub License](https://img.shields.io/github/license/kaueramone/contador-de-veiculos?style=flat-square&color=00e68a)](LICENSE)
+[![ONNX Runtime](https://img.shields.io/badge/Inference-ONNX%20Runtime-blue?style=flat-square)](https://onnxruntime.ai/)
+[![YOLOv8](https://img.shields.io/badge/Model-YOLOv8-green?style=flat-square)](https://github.com/ultralytics/ultralytics)
+
+---
+
+## 🌟 O que é o Vehicle Counter? / What is it?
+
+Este projeto é uma solução de ponta para monitoramento de tráfego que utiliza **Visão Computacional** e **YOLOv8** para detectar e contar veículos (carros, motos, ônibus e caminhões) cruzando uma linha virtual em transmissões de vídeo ao vivo (HLS).
+
+Tudo acontece **100% no navegador**, sem necessidade de servidores potentes para processamento de imagem, graças ao ONNX Runtime Web.
+
+---
+
+## ✨ Features
+
+- 🧠 **YOLOv8 Driven:** Detecção de alta precisão para múltiplas classes de veículos.
+- ⚡ **Zero Backend:** Todo o processamento de IA é feito no cliente (WASM/WebGL).
+- 📺 **HLS Ready:** Suporte nativo para streams de câmeras de segurança e trânsito (via HLS.js).
+- 📊 **Real-time Analytics:** FPS, tempo de inferência, veículos por minuto e log de eventos.
+- 🎨 **Modern Design:** Interface futurista "Cyberpunk" com modo escuro e animações suaves.
+- ⏱️ **Integrated Timer:** Perfeito para sessões de contagem cronometradas.
+
+---
+
+## 🛠️ Tecnologias / Tech Stack
+
+- **HTML5 / CSS3 (Vanilla)** — Design customizado e responsivo.
+- **JavaScript (ES6+)** — Lógica de tracking e manipulação de DOM.
+- **[ONNX Runtime Web](https://onnxruntime.ai/)** — Motor de inferência para o modelo YOLO.
+- **[HLS.js](https://github.com/video-dev/hls.js/)** — Para reprodução de streams M3U8.
+- **YOLOv8n** — Otimizado para rodar de forma leve no browser.
+
+---
+
+## 🚀 Como Integrar / How to Integrate
+
+Você pode facilmente levar o "cérebro" deste projeto para o seu próprio sistema.
+
+### 1. Requisitos
+Você precisará do arquivo do modelo (`yolov5nu.onnx` ou similar) e das bibliotecas via CDN (já incluídas no `index.html`).
+
+### 2. Estrutura de Código
+O coração da detecção está no `app.js`. Para integrar:
+
+```javascript
+// Aponte para sua stream e modelo no CONFIG
+const CONFIG = {
+    modelPath: './seu_modelo.onnx',
+    streamUrl: 'https://link-da-sua-camera.m3u8',
+    // ... outras configs
+};
+```
+
+### 3. Lógica de Cruzamento (Crossing Logic)
+O sistema usa uma linha normalizada (0 a 1). Basta ajustar as coordenadas no `CONFIG` para bater com o ângulo da sua câmera:
+
+```javascript
+countingLine: {
+    x1: 0.05, y1: 0.45, // Início da linha
+    x2: 0.85, y2: 0.45  // Fim da linha
+}
+```
+
+---
+
+## 🔧 Instalação Local / Local Setup
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/kaueramone/contador-de-veiculos.git
+   ```
+2. Certifique-se de ter o arquivo `.onnx` no diretório raiz.
+3. Abra o `index.html` usando um servidor local (ex: Live Server no VS Code) para evitar erros de CORS.
+
+---
+
+## 📄 Licença / License
+
+Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+
+---
+
+**Desenvolvido com ❤️ por [Kaue Ramone](https://github.com/kaueramone)**

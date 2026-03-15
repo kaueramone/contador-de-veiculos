@@ -1,5 +1,5 @@
 # 🚗 Vehicle Counter — AI Live Traffic Analysis
-> **Conte veículos em tempo real direto da sua câmera, movido por Inteligência Artificial no navegador.**
+> **Contagem de veículos em tempo real com Inteligência Artificial sincronizada via VPS.**
 
 [![GitHub License](https://img.shields.io/github/license/kaueramone/contador-de-veiculos?style=flat-square&color=00e68a)](LICENSE)
 [![ONNX Runtime](https://img.shields.io/badge/Inference-ONNX%20Runtime-blue?style=flat-square)](https://onnxruntime.ai/)
@@ -7,13 +7,13 @@
 
 ---
 
-## 🏛️ Arquitetura Síncrona (Nova!) / Synchronous Architecture
+## 🏛️ Arquitetura Síncrona (Principal) / Synchronous Architecture
 
-O projeto agora suporta um modo **Servidor + Banco de Dados**, ideal para jogos de aposta ou predição coletiva:
-- **Centralizado:** Um único servidor VPS processa a câmera.
-- **Sincronizado:** Todos os usuários veem o mesmo contador em tempo real através do **Supabase**.
+Diferente de soluções que rodam apenas no navegador, este projeto centraliza a inteligência em um **servidor (VPS)** para garantir a consistência de dados em cenários de apostas ou predição coletiva:
+- **Fonte Única da Verdade:** Um único servidor processa a câmera, evitando que usuários vejam números diferentes por conta de atrasos ou hardware.
+- **Sincronizado via Supabase:** O banco de dados distribui o contador instantaneamente para todos os dispositivos conectados.
 - **Rodadas Automáticas:** Ciclos de 5 minutos (configurável) entre 09:00 e 17:00.
-- **Lógica de Arredondamento:** Resultados como `87` são automaticamente arredondados para `90`.
+- **Lógica de Arredondamento:** Resultados como `87` são automaticamente arredondados para `90` ao fim da rodada para facilitar o "fechamento".
 
 ---
 

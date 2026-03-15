@@ -7,11 +7,13 @@
 
 ---
 
-## 🌟 O que é o Vehicle Counter? / What is it?
+## 🏛️ Arquitetura Síncrona (Nova!) / Synchronous Architecture
 
-Este projeto é uma solução de ponta para monitoramento de tráfego que utiliza **Visão Computacional** e **YOLOv8** para detectar e contar veículos (carros, motos, ônibus e caminhões) cruzando uma linha virtual em transmissões de vídeo ao vivo (HLS).
-
-Tudo acontece **100% no navegador**, sem necessidade de servidores potentes para processamento de imagem, graças ao ONNX Runtime Web.
+O projeto agora suporta um modo **Servidor + Banco de Dados**, ideal para jogos de aposta ou predição coletiva:
+- **Centralizado:** Um único servidor VPS processa a câmera.
+- **Sincronizado:** Todos os usuários veem o mesmo contador em tempo real através do **Supabase**.
+- **Rodadas Automáticas:** Ciclos de 5 minutos (configurável) entre 09:00 e 17:00.
+- **Lógica de Arredondamento:** Resultados como `87` são automaticamente arredondados para `90`.
 
 ---
 
